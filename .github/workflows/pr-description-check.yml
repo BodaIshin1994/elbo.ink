@@ -1,0 +1,38 @@
+name: PR description check
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+    branches: [main]
+
+jobs:
+  pr-description-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require a real title and description
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = (context.payload.pull_request.title || '').trim();
+            const body = (context.payload.pull_request.body || '').trim();
+            const problems = [];
+
+            const genericTitles = [
+              /^update/i, /^wip$/i, /^fix$/i, /^changes$/i, /^misc$/i,
+              /^untitled/i, /^pull request/i,
+            ];
+            if (title.length < 8) {
+              problems.push(`Title too short (${title.length} chars) — describe what actually changed, not just "fix" or "update".`);
+            } else if (genericTitles.some((re) => re.test(title))) {
+              problems.push(`Title "${title}" is too generic — say what changed, e.g. "Fix nav WORK link href" not "Update".`);
+            }
+
+            if (body.length < 20) {
+              problems.push(`Description is empty or too short (${body.length} chars) — explain what changed and why so it's reviewable without reading every diff line.`);
+            }
+
+            if (problems.length) {
+              core.setFailed(problems.join('\n'));
+            } else {
+              core.info('PR title and description look good.');
+            }

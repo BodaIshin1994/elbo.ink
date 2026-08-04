@@ -79,3 +79,15 @@ def meta_content(driver, attr, value):
 
 def gallery_images(driver):
     return driver.find_elements(By.CSS_SELECTOR, ".grid .tile img")
+
+
+def lang_toggle_button(driver):
+    return driver.find_element(By.CSS_SELECTOR, "#langToggle")
+
+
+def html_lang_attribute(driver):
+    return driver.find_element(By.TAG_NAME, "html").get_attribute("lang")
+
+
+def i18n_text(driver, key):
+    return driver.find_element(By.CSS_SELECTOR, f"[data-i18n='{key}']").text.strip()

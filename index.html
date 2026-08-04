@@ -98,6 +98,12 @@
   nav ul{display:flex;gap:26px;list-style:none}
   nav a{color:var(--bone);text-decoration:none;opacity:.85;transition:opacity .2s}
   nav a:hover{opacity:1}
+  .lang-toggle{
+    font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    background:transparent;border:1px solid var(--line);color:var(--bone);
+    padding:4px 10px;border-radius:3px;cursor:pointer;opacity:.85;transition:opacity .2s,border-color .2s;
+  }
+  .lang-toggle:hover{opacity:1;border-color:var(--blood)}
   @media(max-width:640px){nav ul{display:none}}
 
   /* ---------- HERO (restructured: two-column footer row) ---------- */
@@ -248,54 +254,57 @@
 <nav>
   <div class="mark">ELBO<b>.</b>INK</div>
   <ul>
-    <li><a href="#studio">Studio</a></li>
-    <li><a href="#work">Work</a></li>
-    <li><a href="#book">Book</a></li>
+    <li><a href="#studio" data-i18n="nav.studio">Studio</a></li>
+    <li><a href="#work" data-i18n="nav.work">Work</a></li>
+    <li><a href="#book" data-i18n="nav.book">Book</a></li>
     <li><a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener">Instagram ↗</a></li>
   </ul>
+  <!-- вне <ul>, чтобы переключатель языка оставался доступен и на мобильном
+       (nav ul скрывается целиком через @media(max-width:640px), см. .lang-toggle) -->
+  <button type="button" id="langToggle" class="lang-toggle" aria-label="Switch language">TR</button>
 </nav>
 
 <!-- ============ HERO ============ -->
 <header>
   <div class="titlewrap">
-    <div class="kicker reveal">Custom Tattoo · @elbo.inkk</div>
+    <div class="kicker reveal" data-i18n="hero.kicker">Custom Tattoo · @elbo.inkk</div>
     <h1 class="reveal">Elbo<span class="dot">.</span><br>Ink</h1>
     <div class="hero-bottom reveal">
-      <p class="lede"><em>Ink that stays with you.</em> Fine line, blackwork and original custom pieces — drawn for the body it lives on. Each design is made once, for one person.</p>
+      <p class="lede" data-i18n="hero.lede"><em>Ink that stays with you.</em> Fine line, blackwork and original custom pieces — drawn for the body it lives on. Each design is made once, for one person.</p>
       <ul class="hero-meta-list">
-        <li>Discipline <span>Tattoo Artist</span></li>
-        <li>Access <span>By Appointment</span></li>
-        <li>Based in <span>[LOCATION]</span></li>
+        <li data-i18n="hero.meta.discipline">Discipline <span>Tattoo Artist</span></li>
+        <li data-i18n="hero.meta.access">Access <span>By Appointment</span></li>
+        <li data-i18n="hero.meta.location">Based in <span>[LOCATION]</span></li>
       </ul>
     </div>
   </div>
-  <div class="scroll-cue">Scroll</div>
+  <div class="scroll-cue" data-i18n="hero.scroll">Scroll</div>
 </header>
 
 <!-- ============ MARQUEE ============ -->
 <div class="marquee" aria-hidden="true">
   <div class="track">
-    <span>Fine Line</span><span class="x">✦</span><span>Blackwork</span><span class="x">✦</span><span>Custom Design</span><span class="x">✦</span><span>Hand Drawn</span><span class="x">✦</span>
-    <span>Fine Line</span><span class="x">✦</span><span>Blackwork</span><span class="x">✦</span><span>Custom Design</span><span class="x">✦</span><span>Hand Drawn</span><span class="x">✦</span>
+    <span data-i18n="marquee.fineline">Fine Line</span><span class="x">✦</span><span data-i18n="marquee.blackwork">Blackwork</span><span class="x">✦</span><span data-i18n="marquee.custom">Custom Design</span><span class="x">✦</span><span data-i18n="marquee.handdrawn">Hand Drawn</span><span class="x">✦</span>
+    <span data-i18n="marquee.fineline">Fine Line</span><span class="x">✦</span><span data-i18n="marquee.blackwork">Blackwork</span><span class="x">✦</span><span data-i18n="marquee.custom">Custom Design</span><span class="x">✦</span><span data-i18n="marquee.handdrawn">Hand Drawn</span><span class="x">✦</span>
   </div>
 </div>
 
 <!-- ============ STUDIO ============ -->
 <section id="studio">
   <div class="wrap">
-    <div class="sec-label reveal">The Studio</div>
-    <h2 class="studio-statement reveal">A quiet room, a steady hand, and a design that was never meant for anyone&nbsp;<i>else.</i></h2>
+    <div class="sec-label reveal" data-i18n="studio.label">The Studio</div>
+    <h2 class="studio-statement reveal" data-i18n="studio.statement">A quiet room, a steady hand, and a design that was never meant for anyone&nbsp;<i>else.</i></h2>
     <div class="studio-body">
       <!-- [BIO] Replace with the artist's own words -->
       <div class="studio-copy reveal">
-        <p>ELBO.INK is the work of a tattoo artist obsessed with line, weight and restraint. No flash off the wall — every piece starts as a conversation and ends as a drawing made only for you.</p>
-        <p>Working clean, working slow, and treating the skin like the last page it will ever be on. Booking is by appointment only, through Instagram.</p>
+        <p data-i18n="studio.copy1">ELBO.INK is the work of a tattoo artist obsessed with line, weight and restraint. No flash off the wall — every piece starts as a conversation and ends as a drawing made only for you.</p>
+        <p data-i18n="studio.copy2">Working clean, working slow, and treating the skin like the last page it will ever be on. Booking is by appointment only, through Instagram.</p>
       </div>
       <ul class="facts reveal">
-        <li>Specialty <span>Fine line / Blackwork</span></li>
-        <li>Style <span>Custom only</span></li>
-        <li>Booking <span>By appointment</span></li>
-        <li>Based in <span>[LOCATION]</span></li>
+        <li data-i18n="studio.facts.specialty">Specialty <span>Fine line / Blackwork</span></li>
+        <li data-i18n="studio.facts.style">Style <span>Custom only</span></li>
+        <li data-i18n="studio.facts.booking">Booking <span>By appointment</span></li>
+        <li data-i18n="studio.facts.location">Based in <span>[LOCATION]</span></li>
       </ul>
     </div>
   </div>
@@ -304,23 +313,23 @@
 <!-- ============ SERVICES / WHAT I DO ============ -->
 <section id="services">
   <div class="wrap">
-    <div class="sec-label reveal">What I Do</div>
+    <div class="sec-label reveal" data-i18n="services.label">What I Do</div>
     <div class="service-list">
       <div class="service-row reveal">
-        <h3>Fine Line</h3>
-        <p>Delicate single-needle work. Soft, precise, and built to age well.</p>
+        <h3 data-i18n="services.fineline.title">Fine Line</h3>
+        <p data-i18n="services.fineline.desc">Delicate single-needle work. Soft, precise, and built to age well.</p>
       </div>
       <div class="service-row reveal">
-        <h3>Blackwork</h3>
-        <p>Bold solid black, negative space and high contrast graphic pieces.</p>
+        <h3 data-i18n="services.blackwork.title">Blackwork</h3>
+        <p data-i18n="services.blackwork.desc">Bold solid black, negative space and high contrast graphic pieces.</p>
       </div>
       <div class="service-row reveal">
-        <h3>Custom Design</h3>
-        <p>Original artwork drawn from scratch around your idea and your body.</p>
+        <h3 data-i18n="services.custom.title">Custom Design</h3>
+        <p data-i18n="services.custom.desc">Original artwork drawn from scratch around your idea and your body.</p>
       </div>
       <div class="service-row reveal">
-        <h3>Cover &amp; Rework</h3>
-        <p>Reimagining or refreshing existing tattoos into something you love.</p>
+        <h3 data-i18n="services.cover.title">Cover &amp; Rework</h3>
+        <p data-i18n="services.cover.desc">Reimagining or refreshing existing tattoos into something you love.</p>
       </div>
     </div>
   </div>
@@ -330,24 +339,24 @@
 <section id="work">
   <div class="work-split">
     <div class="work-aside">
-      <div class="sec-label reveal">Selected Work</div>
-      <h2 class="reveal">The<br>Portfolio</h2>
-      <p class="note reveal">A selection of healed and fresh pieces — fine line, blackwork and custom design. Tap any to open the feed.</p>
-      <a class="work-link reveal" href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener">See the full feed ↗</a>
+      <div class="sec-label reveal" data-i18n="work.label">Selected Work</div>
+      <h2 class="reveal" data-i18n="work.heading">The<br>Portfolio</h2>
+      <p class="note reveal" data-i18n="work.note">A selection of healed and fresh pieces — fine line, blackwork and custom design. Tap any to open the feed.</p>
+      <a class="work-link reveal" href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" data-i18n="work.link">See the full feed ↗</a>
     </div>
     <!--
       Photos live in the images/ folder. To add or swap a piece, drop a JPG into images/
       and point a tile's <img src="images/..."> at it. Keep the <a> linking to Instagram.
     -->
     <div class="grid">
-      <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" class="tile"><img src="images/deer-forest-sleeve.jpg" alt="Blackwork forest sleeve tattoo by elbo.ink" loading="lazy"><span class="num">01</span><span class="cap">Blackwork</span><div class="hover">View on Instagram ↗</div></a>
-      <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" class="tile"><img src="images/samurai.jpg" alt="Samurai tattoo by elbo.ink" loading="lazy"><span class="num">02</span><span class="cap">Samurai</span><div class="hover">View on Instagram ↗</div></a>
-      <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" class="tile"><img src="images/dragon-katana.jpg" alt="Dragon and katana tattoo by elbo.ink" loading="lazy"><span class="num">03</span><span class="cap">Dragon</span><div class="hover">View on Instagram ↗</div></a>
-      <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" class="tile"><img src="images/mountain-wave.jpg" alt="Fine line mountain and wave tattoo by elbo.ink" loading="lazy"><span class="num">04</span><span class="cap">Fine Line</span><div class="hover">View on Instagram ↗</div></a>
-      <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" class="tile"><img src="images/pegasus-column.jpg" alt="Pegasus and column tattoo by elbo.ink" loading="lazy"><span class="num">05</span><span class="cap">Mythology</span><div class="hover">View on Instagram ↗</div></a>
-      <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" class="tile"><img src="images/figure.jpg" alt="Fine line figure study tattoo by elbo.ink" loading="lazy"><span class="num">06</span><span class="cap">Figure</span><div class="hover">View on Instagram ↗</div></a>
-      <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" class="tile"><img src="images/koi.jpg" alt="Koi tattoo with red accent by elbo.ink" loading="lazy"><span class="num">07</span><span class="cap">Koi</span><div class="hover">View on Instagram ↗</div></a>
-      <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" class="tile"><img src="images/reaper-hourglass.jpg" alt="Dotwork reaper and hourglass tattoo by elbo.ink" loading="lazy"><span class="num">08</span><span class="cap">Dotwork</span><div class="hover">View on Instagram ↗</div></a>
+      <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" class="tile"><img src="images/deer-forest-sleeve.jpg" alt="Blackwork forest sleeve tattoo by elbo.ink" loading="lazy"><span class="num">01</span><span class="cap" data-i18n="gallery.cap01">Blackwork</span><div class="hover" data-i18n="gallery.view">View on Instagram ↗</div></a>
+      <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" class="tile"><img src="images/samurai.jpg" alt="Samurai tattoo by elbo.ink" loading="lazy"><span class="num">02</span><span class="cap" data-i18n="gallery.cap02">Samurai</span><div class="hover" data-i18n="gallery.view">View on Instagram ↗</div></a>
+      <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" class="tile"><img src="images/dragon-katana.jpg" alt="Dragon and katana tattoo by elbo.ink" loading="lazy"><span class="num">03</span><span class="cap" data-i18n="gallery.cap03">Dragon</span><div class="hover" data-i18n="gallery.view">View on Instagram ↗</div></a>
+      <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" class="tile"><img src="images/mountain-wave.jpg" alt="Fine line mountain and wave tattoo by elbo.ink" loading="lazy"><span class="num">04</span><span class="cap" data-i18n="gallery.cap04">Fine Line</span><div class="hover" data-i18n="gallery.view">View on Instagram ↗</div></a>
+      <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" class="tile"><img src="images/pegasus-column.jpg" alt="Pegasus and column tattoo by elbo.ink" loading="lazy"><span class="num">05</span><span class="cap" data-i18n="gallery.cap05">Mythology</span><div class="hover" data-i18n="gallery.view">View on Instagram ↗</div></a>
+      <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" class="tile"><img src="images/figure.jpg" alt="Fine line figure study tattoo by elbo.ink" loading="lazy"><span class="num">06</span><span class="cap" data-i18n="gallery.cap06">Figure</span><div class="hover" data-i18n="gallery.view">View on Instagram ↗</div></a>
+      <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" class="tile"><img src="images/koi.jpg" alt="Koi tattoo with red accent by elbo.ink" loading="lazy"><span class="num">07</span><span class="cap" data-i18n="gallery.cap07">Koi</span><div class="hover" data-i18n="gallery.view">View on Instagram ↗</div></a>
+      <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener" class="tile"><img src="images/reaper-hourglass.jpg" alt="Dotwork reaper and hourglass tattoo by elbo.ink" loading="lazy"><span class="num">08</span><span class="cap" data-i18n="gallery.cap08">Dotwork</span><div class="hover" data-i18n="gallery.view">View on Instagram ↗</div></a>
     </div>
   </div>
 </section>
@@ -355,16 +364,16 @@
 <!-- ============ BOOK ============ -->
 <section id="book" class="book">
   <div class="wrap book-center">
-    <div class="sec-label reveal">Booking</div>
-    <h2 class="reveal">Let's<br><i>make</i> it.</h2>
-    <p class="reveal">Booking is open through Instagram. Send a DM with your idea, placement, rough size and a reference or two — you'll get a reply with availability.</p>
+    <div class="sec-label reveal" data-i18n="book.label">Booking</div>
+    <h2 class="reveal" data-i18n="book.heading">Let's<br><i>make</i> it.</h2>
+    <p class="reveal" data-i18n="book.copy">Booking is open through Instagram. Send a DM with your idea, placement, rough size and a reference or two — you'll get a reply with availability.</p>
     <a class="cta reveal" href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener">
-      Book on Instagram <span class="arrow">↗</span>
+      <span data-i18n="book.cta">Book on Instagram</span> <span class="arrow">↗</span>
     </a>
     <div class="contact-lines reveal">
-      <div>DM → <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener">@elbo.inkk</a></div>
-      <div>Email → <a href="mailto:hello@example.com">[EMAIL]</a></div>
-      <div>Studio → [LOCATION]</div>
+      <div><span data-i18n="book.dm">DM →</span> <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener">@elbo.inkk</a></div>
+      <div><span data-i18n="book.email">Email →</span> <a href="mailto:hello@example.com">[EMAIL]</a></div>
+      <div><span data-i18n="book.studio">Studio →</span> [LOCATION]</div>
     </div>
   </div>
 </section>
@@ -375,13 +384,110 @@
     <div class="big">Elbo<i>.</i>Ink</div>
     <div class="meta">
       <div><a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener">@elbo.inkk ↗</a></div>
-      <div>By appointment only</div>
+      <div data-i18n="footer.appointment">By appointment only</div>
       <div>© <span id="yr"></span> ELBO.INK</div>
     </div>
   </div>
 </footer>
 
 <script>
+  // ---------- i18n (EN default, TR toggle) ----------
+  // Значения — innerHTML заменяемого элемента (не textContent), т.к. часть
+  // строк содержит инлайновую разметку (<em>, <i>, <br>, вложенный <span>
+  // со значением из hero-meta-list/facts). [LOCATION]/[EMAIL] намеренно не
+  // переводятся — это ещё не заполненные плейсхолдеры, см. README.
+  const I18N = {
+    en: {
+      'nav.studio': 'Studio', 'nav.work': 'Work', 'nav.book': 'Book',
+      'hero.kicker': 'Custom Tattoo · @elbo.inkk',
+      'hero.lede': '<em>Ink that stays with you.</em> Fine line, blackwork and original custom pieces — drawn for the body it lives on. Each design is made once, for one person.',
+      'hero.meta.discipline': 'Discipline <span>Tattoo Artist</span>',
+      'hero.meta.access': 'Access <span>By Appointment</span>',
+      'hero.meta.location': 'Based in <span>[LOCATION]</span>',
+      'hero.scroll': 'Scroll',
+      'marquee.fineline': 'Fine Line', 'marquee.blackwork': 'Blackwork',
+      'marquee.custom': 'Custom Design', 'marquee.handdrawn': 'Hand Drawn',
+      'studio.label': 'The Studio',
+      'studio.statement': 'A quiet room, a steady hand, and a design that was never meant for anyone&nbsp;<i>else.</i>',
+      'studio.copy1': 'ELBO.INK is the work of a tattoo artist obsessed with line, weight and restraint. No flash off the wall — every piece starts as a conversation and ends as a drawing made only for you.',
+      'studio.copy2': 'Working clean, working slow, and treating the skin like the last page it will ever be on. Booking is by appointment only, through Instagram.',
+      'studio.facts.specialty': 'Specialty <span>Fine line / Blackwork</span>',
+      'studio.facts.style': 'Style <span>Custom only</span>',
+      'studio.facts.booking': 'Booking <span>By appointment</span>',
+      'studio.facts.location': 'Based in <span>[LOCATION]</span>',
+      'services.label': 'What I Do',
+      'services.fineline.title': 'Fine Line', 'services.fineline.desc': 'Delicate single-needle work. Soft, precise, and built to age well.',
+      'services.blackwork.title': 'Blackwork', 'services.blackwork.desc': 'Bold solid black, negative space and high contrast graphic pieces.',
+      'services.custom.title': 'Custom Design', 'services.custom.desc': 'Original artwork drawn from scratch around your idea and your body.',
+      'services.cover.title': 'Cover &amp; Rework', 'services.cover.desc': 'Reimagining or refreshing existing tattoos into something you love.',
+      'work.label': 'Selected Work', 'work.heading': 'The<br>Portfolio',
+      'work.note': 'A selection of healed and fresh pieces — fine line, blackwork and custom design. Tap any to open the feed.',
+      'work.link': 'See the full feed ↗',
+      'gallery.cap01': 'Blackwork', 'gallery.cap02': 'Samurai', 'gallery.cap03': 'Dragon', 'gallery.cap04': 'Fine Line',
+      'gallery.cap05': 'Mythology', 'gallery.cap06': 'Figure', 'gallery.cap07': 'Koi', 'gallery.cap08': 'Dotwork',
+      'gallery.view': 'View on Instagram ↗',
+      'book.label': 'Booking', 'book.heading': "Let's<br><i>make</i> it.",
+      'book.copy': "Booking is open through Instagram. Send a DM with your idea, placement, rough size and a reference or two — you'll get a reply with availability.",
+      'book.cta': 'Book on Instagram',
+      'book.dm': 'DM →', 'book.email': 'Email →', 'book.studio': 'Studio →',
+      'footer.appointment': 'By appointment only',
+    },
+    tr: {
+      'nav.studio': 'Stüdyo', 'nav.work': 'İşler', 'nav.book': 'Randevu',
+      'hero.kicker': 'Özel Dövme · @elbo.inkk',
+      'hero.lede': '<em>Kalıcı bir iz.</em> İnce çizgi, blackwork ve size özel tasarımlar — üzerinde yaşayacağı beden için çizilir. Her tasarım sadece bir kişi için, sadece bir kez yapılır.',
+      'hero.meta.discipline': 'Alan <span>Dövme Sanatçısı</span>',
+      'hero.meta.access': 'Randevu <span>Randevu ile</span>',
+      'hero.meta.location': 'Konum <span>[LOCATION]</span>',
+      'hero.scroll': 'Kaydır',
+      'marquee.fineline': 'İnce Çizgi', 'marquee.blackwork': 'Blackwork',
+      'marquee.custom': 'Özel Tasarım', 'marquee.handdrawn': 'El Çizimi',
+      'studio.label': 'Stüdyo',
+      'studio.statement': 'Sessiz bir oda, sakin bir el ve hiç kimse için değil,&nbsp;<i>sadece senin için</i> çizilen bir tasarım.',
+      'studio.copy1': 'ELBO.INK, çizgiye, ağırlığa ve sadeliğe takıntılı bir dövme sanatçısının işidir. Duvardan flash yok — her parça bir sohbetle başlar, sadece senin için çizilmiş bir tasarımla biter.',
+      'studio.copy2': 'Temiz çalışmak, yavaş çalışmak ve cildi hayatının son sayfası gibi görmek. Randevu sadece Instagram üzerinden alınır.',
+      'studio.facts.specialty': 'Uzmanlık <span>İnce çizgi / Blackwork</span>',
+      'studio.facts.style': 'Stil <span>Sadece özel tasarım</span>',
+      'studio.facts.booking': 'Randevu <span>Randevu ile</span>',
+      'studio.facts.location': 'Konum <span>[LOCATION]</span>',
+      'services.label': 'Ne Yapıyorum',
+      'services.fineline.title': 'İnce Çizgi', 'services.fineline.desc': 'Hassas tek iğne işçiliği. Yumuşak, hassas ve zamanla güzelleşen.',
+      'services.blackwork.title': 'Blackwork', 'services.blackwork.desc': 'Yoğun düz siyah, negatif alan ve yüksek kontrastlı grafik işler.',
+      'services.custom.title': 'Özel Tasarım', 'services.custom.desc': 'Fikrinize ve bedeninize özel, sıfırdan çizilen orijinal bir eser.',
+      'services.cover.title': 'Kapatma &amp; Yenileme', 'services.cover.desc': 'Var olan dövmeleri yeniden hayal ederek sevdiğiniz bir şeye dönüştürmek.',
+      'work.label': 'Seçilmiş İşler', 'work.heading': 'Portfolyo',
+      'work.note': 'İyileşmiş ve taze işlerden bir seçki — ince çizgi, blackwork ve özel tasarım. Akışı açmak için birine dokun.',
+      'work.link': 'Tüm akışı gör ↗',
+      'gallery.cap01': 'Blackwork', 'gallery.cap02': 'Samuray', 'gallery.cap03': 'Ejderha', 'gallery.cap04': 'İnce Çizgi',
+      'gallery.cap05': 'Mitoloji', 'gallery.cap06': 'Figür', 'gallery.cap07': 'Koi', 'gallery.cap08': 'Dotwork',
+      'gallery.view': "Instagram'da görüntüle ↗",
+      'book.label': 'Randevu', 'book.heading': 'Hadi<br><i>yapalım</i>.',
+      'book.copy': 'Randevular Instagram üzerinden alınır. Fikrini, yerleşimi, yaklaşık boyutu ve bir-iki referans görselle DM gönder — uygunluk için sana dönüş yapılır.',
+      'book.cta': "Instagram'dan Randevu Al",
+      'book.dm': 'DM →', 'book.email': 'E-posta →', 'book.studio': 'Stüdyo →',
+      'footer.appointment': 'Sadece randevu ile',
+    },
+  };
+
+  function applyLang(lang){
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const val = (I18N[lang] || {})[el.dataset.i18n];
+      if(val !== undefined) el.innerHTML = val;
+    });
+    document.documentElement.lang = lang;
+    document.getElementById('langToggle').textContent = lang === 'en' ? 'TR' : 'EN';
+    try { localStorage.setItem('elbo-lang', lang); } catch(e) {}
+  }
+
+  let currentLang = 'en';
+  try { currentLang = localStorage.getItem('elbo-lang') || 'en'; } catch(e) {}
+  applyLang(currentLang);
+
+  document.getElementById('langToggle').addEventListener('click', () => {
+    currentLang = currentLang === 'en' ? 'tr' : 'en';
+    applyLang(currentLang);
+  });
+
   // year
   document.getElementById('yr').textContent = new Date().getFullYear();
 

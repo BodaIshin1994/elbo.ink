@@ -22,8 +22,11 @@ from pages.home_page import (
     favicon_link,
     gallery_images,
     has_reveal_class_active,
+    html_lang_attribute,
+    i18n_text,
     instagram_links,
     is_nav_list_visible,
+    lang_toggle_button,
     mailto_link,
     meta_content,
     nav_links,
@@ -216,6 +219,60 @@ def test_gallery_shows_eight_real_photos_without_broken_images(driver):
 
 
 # ── Скролл-reveal анимация ─────────────────────────────────────────────────────
+
+# ── Переключатель языка (EN/TR) ────────────────────────────────────────────────
+# Кнопка вынесена ИЗ <ul> в nav намеренно — иначе она пропадала бы вместе со
+# всем меню на мобильном (см. test_mobile_viewport_hides_nav_with_no_alternative_toggle).
+# Порядок важен: эти тесты идут последними в файле и переключают язык на
+# живом сайте — более ранние тесты, чувствительные к видимому тексту
+# (например test_nav_work_link_points_to_correct_section), должны запускаться
+# раньше, чтобы не зависеть от того, на каком языке останавливается toggle.
+
+def test_lang_toggle_defaults_to_english(driver):
+    open_home(driver)
+    assert html_lang_attribute(driver) == "en"
+    assert lang_toggle_button(driver).text.strip() == "TR"
+    assert i18n_text(driver, "nav.studio") == "Studio"
+
+
+def test_lang_toggle_switches_to_turkish_and_back(driver):
+    open_home(driver)
+    lang_toggle_button(driver).click()
+
+    assert html_lang_attribute(driver) == "tr"
+    assert lang_toggle_button(driver).text.strip() == "EN"
+    assert i18n_text(driver, "nav.studio") == "Stüdyo"
+    assert i18n_text(driver, "nav.work") == "İşler"
+
+    lang_toggle_button(driver).click()
+    assert html_lang_attribute(driver) == "en"
+    assert i18n_text(driver, "nav.studio") == "Studio"
+
+
+def test_lang_toggle_choice_persists_across_reload(driver):
+    open_home(driver)
+    lang_toggle_button(driver).click()
+    assert html_lang_attribute(driver) == "tr"
+
+    open_home(driver)
+    assert html_lang_attribute(driver) == "tr", (
+        "Выбор языка должен сохраняться через localStorage между перезагрузками"
+    )
+
+    # уборка: возвращаем на английский, чтобы не влиять на порядок запусков
+    lang_toggle_button(driver).click()
+    assert html_lang_attribute(driver) == "en"
+
+
+def test_lang_toggle_button_stays_visible_on_mobile(mobile_driver):
+    """В отличие от остальных пунктов меню, переключатель языка находится
+    вне <ul> и не должен пропадать на мобильной ширине."""
+    open_home(mobile_driver)
+    assert not is_nav_list_visible(mobile_driver)
+    assert lang_toggle_button(mobile_driver).is_displayed(), (
+        "Переключатель языка должен оставаться видимым на мобильном, даже когда сам список меню скрыт"
+    )
+
 
 def test_scroll_reveal_elements_become_visible_on_scroll(driver):
     open_home(driver)

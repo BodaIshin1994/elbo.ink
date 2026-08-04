@@ -129,42 +129,41 @@ def test_mailto_link_present_and_well_formed(driver):
     assert link.get_attribute("href").startswith("mailto:")
 
 
-def test_mailto_href_and_visible_placeholder_are_consistent(driver):
-    """Пограничный случай, важный именно для этого пре-лонча: видимый
-    текст ссылки email сейчас '[EMAIL]' (плейсхолдер), а href уже указывает
-    на настоящий на вид адрес 'mailto:hello@example.com'. Если при
-    заполнении контента поменять только видимый текст (что и предлагает
-    README: 'search the code for those markers'), а не href — письма
-    будут уходить на чужой домен, а не туда, куда ожидает автор."""
+REAL_BOOKING_EMAIL = "Elbo.inkk@gmail.com"
+
+
+def test_mailto_href_and_visible_text_match_real_email(driver):
+    """Раньше здесь был пограничный случай пре-лонча: видимый текст был
+    плейсхолдером '[EMAIL]', а href уже указывал на чужой домен
+    example.com — риск, что при заполнении контента поменяют только
+    текст, а не href. Реальный email добавлен 2026-08-04 — теперь просто
+    проверяем, что видимый текст и href совпадают и это ожидаемый адрес."""
     open_home(driver)
     link = mailto_link(driver)
     href = link.get_attribute("href")
     visible_text = link.text.strip()
 
-    if "[EMAIL]" in visible_text:
-        assert "example.com" not in href, (
-            "href='mailto:...' уже указывает на правдоподобный, но чужой домен "
-            f"({href!r}), при этом видимый текст ещё плейсхолдер {visible_text!r} — "
-            "высокий риск, что при заполнении контента поменяют только текст, "
-            "и реальные письма будут уходить в пустоту"
-        )
+    assert href == f"mailto:{REAL_BOOKING_EMAIL}"
+    assert visible_text.lower() == REAL_BOOKING_EMAIL.lower(), (
+        f"Видимый текст ({visible_text!r}) должен совпадать с реальным email в href"
+    )
 
 
 # ── Контент пре-лонча ──────────────────────────────────────────────────────────
 
 def test_placeholder_markers_still_present_before_launch(driver):
     """Намеренно фиксирует ТЕКУЩЕЕ состояние (сайт не готов к запуску):
-    [LOCATION] и [EMAIL] ещё не заменены реальным контентом (адрес
-    студии сознательно отложен на будущее, реальный booking email пока
-    не предоставлен). [BIO] и [PHOTO] уже заполнены реальным контентом
-    2026-08-04 — их отсутствие здесь ожидаемо, не баг.
+    [LOCATION] ещё не заменён реальным контентом (адрес студии сознательно
+    отложен на будущее — планируется как отдельная фича). [BIO], [PHOTO]
+    и [EMAIL] уже заполнены реальным контентом (email добавлен 2026-08-04)
+    — их отсутствие здесь ожидаемо, не баг.
 
-    Когда [LOCATION]/[EMAIL] тоже заполнят, этот тест должен начать
-    падать — это сигнал убрать/инвертировать его, а не 'фиксить'."""
+    Когда [LOCATION] тоже заполнят, этот тест должен начать падать —
+    это сигнал убрать/инвертировать его, а не 'фиксить'."""
     open_home(driver)
     found = placeholder_markers_in_body(driver)
-    assert set(found) == {"[LOCATION]", "[EMAIL]"}, (
-        f"Ожидались только [LOCATION] и [EMAIL] как оставшиеся плейсхолдеры, найдено: {found}"
+    assert set(found) == {"[LOCATION]"}, (
+        f"Ожидался только [LOCATION] как оставшийся плейсхолдер, найдено: {found}"
     )
 
 

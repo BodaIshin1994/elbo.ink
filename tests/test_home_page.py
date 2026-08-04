@@ -21,6 +21,7 @@ from pages.home_page import (
     copyright_year_text,
     favicon_link,
     gallery_images,
+    has_horizontal_overflow,
     has_reveal_class_active,
     html_lang_attribute,
     i18n_text,
@@ -80,6 +81,32 @@ def test_nav_work_link_points_to_correct_section(driver):
     assert work_links[0].get_attribute("href").endswith("#work"), (
         f"Пункт меню 'WORK' должен вести на #work, а ведёт на {work_links[0].get_attribute('href')!r}"
     )
+
+
+def test_no_horizontal_overflow_at_narrow_widths_in_either_language(mobile_driver):
+    """Регрессионный guard: на 320px в турецкой локали был найден реальный
+    баг — .cta ('Instagram'dan Randevu Al ↗') не помещался в ширину экрана
+    из-за white-space:nowrap, и из-за этого 'раздувался' также nav
+    (position:fixed;left:0;right:0;width:100% резолвится против containing
+    block, который сам увеличивается при переполнении другого элемента).
+    Исправлено 2026-08-04 медиа-запросом для .cta на <420px.
+
+    mobile_driver.set_window_size здесь недостаточно (см. историю
+    отладки — Chrome desktop не сужается ниже ~485px через обычный
+    resize), поэтому используем настоящую эмуляцию через CDP."""
+    mobile_driver.execute_cdp_cmd("Emulation.setDeviceMetricsOverride", {
+        "width": 320, "height": 800, "deviceScaleFactor": 2, "mobile": True,
+    })
+    open_home(mobile_driver)
+    assert not has_horizontal_overflow(mobile_driver), "Горизонтальное переполнение на 320px (EN)"
+
+    lang_toggle_button(mobile_driver).click()
+    time.sleep(0.5)
+    assert not has_horizontal_overflow(mobile_driver), "Горизонтальное переполнение на 320px (TR)"
+
+    # уборка: сбрасываем на английский и снимаем эмуляцию устройства
+    lang_toggle_button(mobile_driver).click()
+    mobile_driver.execute_cdp_cmd("Emulation.clearDeviceMetricsOverride", {})
 
 
 def test_mobile_viewport_hides_nav_with_no_alternative_toggle(mobile_driver):

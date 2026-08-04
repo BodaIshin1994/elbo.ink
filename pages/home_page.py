@@ -89,6 +89,12 @@ def html_lang_attribute(driver):
     return driver.find_element(By.TAG_NAME, "html").get_attribute("lang")
 
 
+def has_horizontal_overflow(driver):
+    return driver.execute_script(
+        "return document.documentElement.scrollWidth - document.documentElement.clientWidth"
+    ) > 2
+
+
 def i18n_text(driver, key):
     """textContent, а не .text: элементы с data-i18n часто лежат внутри
     .reveal-контейнеров, невидимых для Selenium .text до scroll-reveal

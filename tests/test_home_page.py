@@ -18,10 +18,13 @@ from pages.home_page import (
     INSTAGRAM_HANDLE_URL,
     SECTION_IDS,
     copyright_year_text,
+    favicon_link,
+    gallery_images,
     has_reveal_class_active,
     instagram_links,
     is_nav_list_visible,
     mailto_link,
+    meta_content,
     nav_links,
     placeholder_markers_in_body,
     reveal_elements,
@@ -143,16 +146,67 @@ def test_mailto_href_and_visible_placeholder_are_consistent(driver):
 
 def test_placeholder_markers_still_present_before_launch(driver):
     """Намеренно фиксирует ТЕКУЩЕЕ состояние (сайт не готов к запуску):
-    [LOCATION]/[EMAIL]/[BIO] ещё не заменены реальным контентом. Это не
-    баг — это чек-лист готовности к лончу. Когда контент будет заполнен,
-    этот тест должен начать падать, и это будет сигналом убрать/инвертировать
-    его, а не проблемой, которую нужно 'фиксить'."""
+    [LOCATION] и [EMAIL] ещё не заменены реальным контентом (адрес
+    студии сознательно отложен на будущее, реальный booking email пока
+    не предоставлен). [BIO] и [PHOTO] уже заполнены реальным контентом
+    2026-08-04 — их отсутствие здесь ожидаемо, не баг.
+
+    Когда [LOCATION]/[EMAIL] тоже заполнят, этот тест должен начать
+    падать — это сигнал убрать/инвертировать его, а не 'фиксить'."""
     open_home(driver)
     found = placeholder_markers_in_body(driver)
-    assert found, (
-        "Ни один плейсхолдер-маркер не найден — либо контент уже заполнен "
-        "(тогда этот тест нужно удалить/инвертировать), либо разметка изменилась"
+    assert set(found) == {"[LOCATION]", "[EMAIL]"}, (
+        f"Ожидались только [LOCATION] и [EMAIL] как оставшиеся плейсхолдеры, найдено: {found}"
     )
+
+
+def test_bio_and_photo_placeholders_are_filled(driver):
+    """Симметричный тест к предыдущему: [BIO] и [PHOTO] должны БЫТЬ
+    заполнены — если кто-то откатит контент обратно на плейсхолдер,
+    здесь это будет видно."""
+    open_home(driver)
+    found = placeholder_markers_in_body(driver)
+    assert "[BIO]" not in found
+    assert "[PHOTO]" not in found
+
+
+# ── Favicon / соцсети (Open Graph, Twitter Card) ──────────────────────────────
+
+def test_favicon_present(driver):
+    open_home(driver)
+    link = favicon_link(driver)
+    assert link is not None, "Тег <link rel='icon'> не найден"
+    assert link.get_attribute("href"), "Favicon есть в разметке, но href пустой"
+
+
+def test_open_graph_tags_present_and_consistent(driver):
+    open_home(driver)
+    assert meta_content(driver, "property", "og:title")
+    assert meta_content(driver, "property", "og:description")
+    og_image = meta_content(driver, "property", "og:image")
+    assert og_image and og_image.startswith("https://"), (
+        f"og:image должен быть абсолютным HTTPS URL (соцсети не подтягивают относительные), получено: {og_image!r}"
+    )
+
+
+def test_twitter_card_tags_present(driver):
+    open_home(driver)
+    assert meta_content(driver, "name", "twitter:card") == "summary_large_image"
+    assert meta_content(driver, "name", "twitter:title")
+    assert meta_content(driver, "name", "twitter:image")
+
+
+# ── Галерея (реальные фото) ────────────────────────────────────────────────────
+
+def test_gallery_shows_eight_real_photos_without_broken_images(driver):
+    open_home(driver)
+    images = gallery_images(driver)
+    assert len(images) == 8, f"Ожидалось 8 фото в галерее, найдено {len(images)}"
+
+    for img in images:
+        natural_width = driver.execute_script("return arguments[0].naturalWidth", img)
+        assert natural_width > 0, f"Изображение не загрузилось (broken): {img.get_attribute('src')!r}"
+        assert img.get_attribute("alt"), f"У изображения нет alt-текста: {img.get_attribute('src')!r}"
 
 
 # ── Скролл-reveal анимация ─────────────────────────────────────────────────────

@@ -136,12 +136,15 @@ def test_mailto_href_and_visible_text_match_real_email(driver):
     """Раньше здесь был пограничный случай пре-лонча: видимый текст был
     плейсхолдером '[EMAIL]', а href уже указывал на чужой домен
     example.com — риск, что при заполнении контента поменяют только
-    текст, а не href. Реальный email добавлен 2026-08-04 — теперь просто
-    проверяем, что видимый текст и href совпадают и это ожидаемый адрес."""
+    текст, а не href. Реальный email добавлен 2026-08-04.
+
+    Ссылка лежит внутри .contact-lines.reveal — элемент невидим для
+    Selenium .text до срабатывания scroll-reveal (та же особенность, что
+    и у .cta/галереи), поэтому текст берём через textContent, а не .text."""
     open_home(driver)
     link = mailto_link(driver)
     href = link.get_attribute("href")
-    visible_text = link.text.strip()
+    visible_text = driver.execute_script("return arguments[0].textContent", link).strip()
 
     assert href == f"mailto:{REAL_BOOKING_EMAIL}"
     assert visible_text.lower() == REAL_BOOKING_EMAIL.lower(), (
@@ -151,20 +154,22 @@ def test_mailto_href_and_visible_text_match_real_email(driver):
 
 # ── Контент пре-лонча ──────────────────────────────────────────────────────────
 
-def test_placeholder_markers_still_present_before_launch(driver):
-    """Намеренно фиксирует ТЕКУЩЕЕ состояние (сайт не готов к запуску):
-    [LOCATION] ещё не заменён реальным контентом (адрес студии сознательно
-    отложен на будущее — планируется как отдельная фича). [BIO], [PHOTO]
-    и [EMAIL] уже заполнены реальным контентом (email добавлен 2026-08-04)
-    — их отсутствие здесь ожидаемо, не баг.
-
-    Когда [LOCATION] тоже заполнят, этот тест должен начать падать —
-    это сигнал убрать/инвертировать его, а не 'фиксить'."""
+def test_only_location_placeholder_remains_before_launch(driver):
+    """[BIO]/[PHOTO]/[EMAIL] уже заполнены реальным контентом. [LOCATION]
+    заполнен текстом 'Istanbul'/'İstanbul' — это НЕ плейсхолдер-маркер
+    (нет квадратных скобок), поэтому фактически на сайте сейчас не
+    осталось ни одного незаполненного [MARKER]. Тест зафиксирован как
+    'на будущее': если кто-то добавит новый [MARKER]-плейсхолдер и забудет
+    его заполнить перед деплоем, это будет здесь замечено."""
     open_home(driver)
     found = placeholder_markers_in_body(driver)
-    assert set(found) == {"[LOCATION]"}, (
-        f"Ожидался только [LOCATION] как оставшийся плейсхолдер, найдено: {found}"
-    )
+    assert found == [], f"Остались незаполненные плейсхолдеры перед запуском: {found}"
+
+
+def test_location_filled_with_istanbul(driver):
+    open_home(driver)
+    assert i18n_text(driver, "hero.meta.location").strip().endswith("Istanbul")
+    assert i18n_text(driver, "studio.facts.location").strip().endswith("Istanbul")
 
 
 def test_bio_and_photo_placeholders_are_filled(driver):

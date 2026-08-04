@@ -266,7 +266,7 @@
       <ul class="hero-meta-list">
         <li data-i18n="hero.meta.discipline">Discipline <span>Tattoo Artist</span></li>
         <li data-i18n="hero.meta.access">Access <span>By Appointment</span></li>
-        <li data-i18n="hero.meta.location">Based in <span>[LOCATION]</span></li>
+        <li data-i18n="hero.meta.location">Based in <span>Istanbul</span></li>
       </ul>
     </div>
   </div>
@@ -296,7 +296,7 @@
         <li data-i18n="studio.facts.specialty">Specialty <span>Fine line / Blackwork</span></li>
         <li data-i18n="studio.facts.style">Style <span>Custom only</span></li>
         <li data-i18n="studio.facts.booking">Booking <span>By appointment</span></li>
-        <li data-i18n="studio.facts.location">Based in <span>[LOCATION]</span></li>
+        <li data-i18n="studio.facts.location">Based in <span>Istanbul</span></li>
       </ul>
     </div>
   </div>
@@ -365,7 +365,7 @@
     <div class="contact-lines reveal">
       <div><span data-i18n="book.dm">DM →</span> <a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener">@elbo.inkk</a></div>
       <div><span data-i18n="book.email">Email →</span> <a href="mailto:Elbo.inkk@gmail.com">Elbo.inkk@gmail.com</a></div>
-      <div><span data-i18n="book.studio">Studio →</span> [LOCATION]</div>
+      <div><span data-i18n="book.studio">Studio →</span> <span data-i18n="book.studioValue">Istanbul</span></div>
     </div>
   </div>
 </section>
@@ -386,8 +386,7 @@
   // ---------- i18n (EN default, TR toggle) ----------
   // Значения — innerHTML заменяемого элемента (не textContent), т.к. часть
   // строк содержит инлайновую разметку (<em>, <i>, <br>, вложенный <span>
-  // со значением из hero-meta-list/facts). [LOCATION]/[EMAIL] намеренно не
-  // переводятся — это ещё не заполненные плейсхолдеры, см. README.
+  // со значением из hero-meta-list/facts).
   const I18N = {
     en: {
       'nav.studio': 'Studio', 'nav.work': 'Work', 'nav.book': 'Book',
@@ -395,7 +394,7 @@
       'hero.lede': '<em>Ink that stays with you.</em> Fine line, blackwork and original custom pieces — drawn for the body it lives on. Each design is made once, for one person.',
       'hero.meta.discipline': 'Discipline <span>Tattoo Artist</span>',
       'hero.meta.access': 'Access <span>By Appointment</span>',
-      'hero.meta.location': 'Based in <span>[LOCATION]</span>',
+      'hero.meta.location': 'Based in <span>Istanbul</span>',
       'hero.scroll': 'Scroll',
       'marquee.fineline': 'Fine Line', 'marquee.blackwork': 'Blackwork',
       'marquee.custom': 'Custom Design', 'marquee.handdrawn': 'Hand Drawn',
@@ -406,7 +405,8 @@
       'studio.facts.specialty': 'Specialty <span>Fine line / Blackwork</span>',
       'studio.facts.style': 'Style <span>Custom only</span>',
       'studio.facts.booking': 'Booking <span>By appointment</span>',
-      'studio.facts.location': 'Based in <span>[LOCATION]</span>',
+      'studio.facts.location': 'Based in <span>Istanbul</span>',
+      'book.studioValue': 'Istanbul',
       'services.label': 'What I Do',
       'services.fineline.title': 'Fine Line', 'services.fineline.desc': 'Delicate single-needle work. Soft, precise, and built to age well.',
       'services.blackwork.title': 'Blackwork', 'services.blackwork.desc': 'Bold solid black, negative space and high contrast graphic pieces.',
@@ -430,7 +430,7 @@
       'hero.lede': '<em>Kalıcı bir iz.</em> İnce çizgi, blackwork ve size özel tasarımlar — üzerinde yaşayacağı beden için çizilir. Her tasarım sadece bir kişi için, sadece bir kez yapılır.',
       'hero.meta.discipline': 'Alan <span>Dövme Sanatçısı</span>',
       'hero.meta.access': 'Randevu <span>Randevu ile</span>',
-      'hero.meta.location': 'Konum <span>[LOCATION]</span>',
+      'hero.meta.location': 'Konum <span>İstanbul</span>',
       'hero.scroll': 'Kaydır',
       'marquee.fineline': 'İnce Çizgi', 'marquee.blackwork': 'Blackwork',
       'marquee.custom': 'Özel Tasarım', 'marquee.handdrawn': 'El Çizimi',
@@ -441,7 +441,8 @@
       'studio.facts.specialty': 'Uzmanlık <span>İnce çizgi / Blackwork</span>',
       'studio.facts.style': 'Stil <span>Sadece özel tasarım</span>',
       'studio.facts.booking': 'Randevu <span>Randevu ile</span>',
-      'studio.facts.location': 'Konum <span>[LOCATION]</span>',
+      'studio.facts.location': 'Konum <span>İstanbul</span>',
+      'book.studioValue': 'İstanbul',
       'services.label': 'Ne Yapıyorum',
       'services.fineline.title': 'İnce Çizgi', 'services.fineline.desc': 'Hassas tek iğne işçiliği. Yumuşak, hassas ve zamanla güzelleşen.',
       'services.blackwork.title': 'Blackwork', 'services.blackwork.desc': 'Yoğun düz siyah, negatif alan ve yüksek kontrastlı grafik işler.',

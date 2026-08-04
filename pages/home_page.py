@@ -90,4 +90,8 @@ def html_lang_attribute(driver):
 
 
 def i18n_text(driver, key):
-    return driver.find_element(By.CSS_SELECTOR, f"[data-i18n='{key}']").text.strip()
+    """textContent, а не .text: элементы с data-i18n часто лежат внутри
+    .reveal-контейнеров, невидимых для Selenium .text до scroll-reveal
+    анимации (проверено на .cta/mailto/hero-meta-list)."""
+    el = driver.find_element(By.CSS_SELECTOR, f"[data-i18n='{key}']")
+    return driver.execute_script("return arguments[0].textContent", el).strip()

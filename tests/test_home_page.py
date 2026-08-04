@@ -12,6 +12,7 @@ import time
 
 import pytest
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
 from framework.helpers import open_home
 from pages.home_page import (
@@ -199,13 +200,18 @@ def test_twitter_card_tags_present(driver):
 # ── Галерея (реальные фото) ────────────────────────────────────────────────────
 
 def test_gallery_shows_eight_real_photos_without_broken_images(driver):
+    """Изображения галереи — loading='lazy', браузер не начинает их
+    грузить, пока они не окажутся у видимой области, поэтому перед
+    проверкой naturalWidth обязательно scrollIntoView + ожидание."""
     open_home(driver)
     images = gallery_images(driver)
     assert len(images) == 8, f"Ожидалось 8 фото в галерее, найдено {len(images)}"
 
     for img in images:
-        natural_width = driver.execute_script("return arguments[0].naturalWidth", img)
-        assert natural_width > 0, f"Изображение не загрузилось (broken): {img.get_attribute('src')!r}"
+        scroll_to(driver, img)
+        WebDriverWait(driver, 10).until(
+            lambda d: d.execute_script("return arguments[0].complete && arguments[0].naturalWidth > 0", img)
+        )
         assert img.get_attribute("alt"), f"У изображения нет alt-текста: {img.get_attribute('src')!r}"
 
 

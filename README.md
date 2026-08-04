@@ -53,9 +53,28 @@ they walk you through it automatically.
 
 ## Still to do
 
-- **Photos:** the gallery currently shows placeholder tiles. Send the photos and they drop
-  straight into `images/` and the grid.
-- **Copy:** the bio and the `[LOCATION]` / `[EMAIL]` fields are placeholders — fill those in
-  (search the code for those markers).
+- **Custom domain:** `elbo.ink` DNS isn't pointed at GitHub Pages yet — the live site is
+  currently only reachable at `https://bodaishin1994.github.io/elbo.ink/`. See "Connecting
+  the domain" above once ready.
 
-Static sites are easy to update: change the files, re-upload (or `git push` again), done.
+Everything else (photos, bio, booking email, location, favicon, social preview tags,
+EN/TR language toggle) is filled in and live.
+
+---
+
+## Branching workflow
+
+Three branches, in order:
+
+1. **`dev`** — work happens here. Small commits, pushed often.
+2. **`staging`** — merge `dev` into `staging` once a change is ready to verify. Test by
+   checking out `staging` locally and running the test suite (`pytest tests/ -v`) against
+   a local `file://` copy of `index.html`, or by pointing `framework/helpers.SITE_URL` at a
+   local static server for the checked-out branch. GitHub Pages only serves one branch
+   (see below), so `staging` has no public URL of its own — this is a local review gate,
+   not a second live site.
+3. **`main`** — production. GitHub Pages (Settings → Pages) deploys from `main` at the
+   repo root, so merging to `main` and pushing is what goes live at
+   `https://bodaishin1994.github.io/elbo.ink/` (and eventually `elbo.ink` once DNS is set up).
+
+Static sites are easy to update: change the files, commit, merge up the chain, push.

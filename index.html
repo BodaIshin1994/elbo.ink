@@ -79,13 +79,6 @@
 
   ::selection{background:var(--blood);color:var(--bone)}
 
-  /* cursor ink dot */
-  .cursor{position:fixed;top:0;left:0;width:9px;height:9px;border-radius:50%;background:var(--blood);
-    pointer-events:none;z-index:10000;transform:translate(-50%,-50%);mix-blend-mode:screen;
-    transition:width .25s, height .25s, background .25s;}
-  .cursor.grow{width:46px;height:46px;background:rgba(192,39,29,.4)}
-  @media (hover:none){.cursor{display:none}}
-
   .wrap{max-width:1280px;margin:0 auto;padding:0 28px}
 
   /* ---------- NAV ---------- */
@@ -249,7 +242,6 @@
 </style>
 </head>
 <body>
-<div class="cursor" id="cursor"></div>
 
 <nav>
   <div class="mark">ELBO<b>.</b>INK</div>
@@ -496,18 +488,6 @@
     entries.forEach((e,i)=>{ if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('in'), i*70); io.unobserve(e.target);} });
   },{threshold:.15});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
-  // cursor ink dot
-  const cur = document.getElementById('cursor');
-  if(window.matchMedia('(hover:hover)').matches){
-    let x=0,y=0,cx=0,cy=0;
-    addEventListener('mousemove',e=>{x=e.clientX;y=e.clientY});
-    (function loop(){cx+=(x-cx)*.18;cy+=(y-cy)*.18;cur.style.left=cx+'px';cur.style.top=cy+'px';requestAnimationFrame(loop)})();
-    document.querySelectorAll('a, .tile, .cta').forEach(el=>{
-      el.addEventListener('mouseenter',()=>cur.classList.add('grow'));
-      el.addEventListener('mouseleave',()=>cur.classList.remove('grow'));
-    });
-  }
 </script>
 </body>
 </html>

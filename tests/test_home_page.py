@@ -88,13 +88,17 @@ def test_mobile_viewport_hides_nav_with_no_alternative_toggle(mobile_driver):
     (@media(max-width:640px){nav ul{display:none}}), а гамбургер-кнопки
     или другого способа открыть его в JS нет — на мобильном ссылки навигации
     просто не существуют для пользователя (сайт одностраничный, скроллить
-    можно вручную, но прямых переходов по разделам нет)."""
+    можно вручную, но прямых переходов по разделам нет).
+
+    #langToggle — реальная, отдельная фича (переключатель языка, см.
+    test_lang_toggle_button_stays_visible_on_mobile), намеренно исключён
+    из проверки ниже — это не тоггл мобильного меню."""
     open_home(mobile_driver)
     assert not is_nav_list_visible(mobile_driver)
 
     toggle_candidates = [
         b for b in mobile_driver.find_elements(By.CSS_SELECTOR, "button, [class*='toggle'], [class*='burger'], [class*='menu-btn']")
-        if b.is_displayed()
+        if b.is_displayed() and b.get_attribute("id") != "langToggle"
     ]
     assert not toggle_candidates, (
         "Найдена кнопка, похожая на мобильное меню — если это и есть тот тоггл, "
@@ -229,10 +233,12 @@ def test_gallery_shows_eight_real_photos_without_broken_images(driver):
 # раньше, чтобы не зависеть от того, на каком языке останавливается toggle.
 
 def test_lang_toggle_defaults_to_english(driver):
+    """nav a{text-transform:uppercase} — сравниваем в верхнем регистре,
+    как и в test_nav_work_link_points_to_correct_section."""
     open_home(driver)
     assert html_lang_attribute(driver) == "en"
     assert lang_toggle_button(driver).text.strip() == "TR"
-    assert i18n_text(driver, "nav.studio") == "Studio"
+    assert i18n_text(driver, "nav.studio").upper() == "STUDIO"
 
 
 def test_lang_toggle_switches_to_turkish_and_back(driver):
@@ -241,12 +247,12 @@ def test_lang_toggle_switches_to_turkish_and_back(driver):
 
     assert html_lang_attribute(driver) == "tr"
     assert lang_toggle_button(driver).text.strip() == "EN"
-    assert i18n_text(driver, "nav.studio") == "Stüdyo"
-    assert i18n_text(driver, "nav.work") == "İşler"
+    assert i18n_text(driver, "nav.studio").upper() == "STÜDYO"
+    assert i18n_text(driver, "nav.work").upper() == "İŞLER"
 
     lang_toggle_button(driver).click()
     assert html_lang_attribute(driver) == "en"
-    assert i18n_text(driver, "nav.studio") == "Studio"
+    assert i18n_text(driver, "nav.studio").upper() == "STUDIO"
 
 
 def test_lang_toggle_choice_persists_across_reload(driver):

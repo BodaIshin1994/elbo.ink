@@ -1,0 +1,61 @@
+name: Deploy Pages (main + staging + dev previews)
+
+on:
+  push:
+    branches: [main, staging, dev]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: site-main
+
+      - name: Checkout staging
+        uses: actions/checkout@v4
+        with:
+          ref: staging
+          path: site-staging
+
+      - name: Checkout dev
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+          path: site-dev
+
+      - name: Assemble combined Pages artifact
+        run: |
+          mkdir -p _site/staging _site/dev
+          cp -r site-main/index.html site-main/images site-main/.nojekyll _site/ 2>/dev/null || true
+          cp -r site-staging/index.html site-staging/images _site/staging/ 2>/dev/null || true
+          cp -r site-dev/index.html site-dev/images _site/dev/ 2>/dev/null || true
+          touch _site/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

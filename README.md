@@ -64,17 +64,16 @@ EN/TR language toggle) is filled in and live.
 
 ## Branching workflow
 
-Three branches, in order:
+Three branches, in order, each with its own live URL (all served by one GitHub Pages
+site via `.github/workflows/deploy-pages.yml`, which builds `main` + `staging` + `dev`
+into one combined artifact on every push to any of the three):
 
-1. **`dev`** — work happens here. Small commits, pushed often.
-2. **`staging`** — merge `dev` into `staging` once a change is ready to verify. Test by
-   checking out `staging` locally and running the test suite (`pytest tests/ -v`) against
-   a local `file://` copy of `index.html`, or by pointing `framework/helpers.SITE_URL` at a
-   local static server for the checked-out branch. GitHub Pages only serves one branch
-   (see below), so `staging` has no public URL of its own — this is a local review gate,
-   not a second live site.
-3. **`main`** — production. GitHub Pages (Settings → Pages) deploys from `main` at the
-   repo root, so merging to `main` and pushing is what goes live at
-   `https://bodaishin1994.github.io/elbo.ink/` (and eventually `elbo.ink` once DNS is set up).
+| Branch | URL | Notes |
+|---|---|---|
+| `dev` | `https://bodaishin1994.github.io/elbo.ink/dev/` | Work happens here. Small commits, pushed often. |
+| `staging` | `https://bodaishin1994.github.io/elbo.ink/staging/` | Merge `dev` into `staging` once a change is ready to verify — check the live preview URL above before promoting further. |
+| `main` | `https://bodaishin1994.github.io/elbo.ink/` | Production (and eventually `elbo.ink` once DNS is set up). **Protected**: no direct pushes — updates only land via a pull request (`staging` → `main`), even for the repo owner. |
 
-Static sites are easy to update: change the files, commit, merge up the chain, push.
+Promote a change: commit to `dev` → push → merge `dev` into `staging`, push, check the
+`/staging/` preview → open a PR from `staging` into `main` and merge it (direct `git push`
+to `main` is blocked by branch protection).

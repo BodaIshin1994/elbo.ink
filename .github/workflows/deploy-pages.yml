@@ -12,7 +12,11 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  # cancel-in-progress:true caused racing deploys to fail with a 409 when
+  # dev/staging were pushed back-to-back (each push cancels the other's
+  # in-flight deploy-pages step mid-flight, GitHub Pages API then rejects
+  # the survivor). Queuing sequentially instead of cancelling avoids this.
+  cancel-in-progress: false
 
 jobs:
   build:

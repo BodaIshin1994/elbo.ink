@@ -91,12 +91,19 @@
   nav ul{display:flex;gap:26px;list-style:none}
   nav a{color:var(--bone);text-decoration:none;opacity:.85;transition:opacity .2s}
   nav a:hover{opacity:1}
+  .nav-actions{display:flex;align-items:center;gap:12px}
   .lang-toggle{
     font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
     background:transparent;border:1px solid var(--line);color:var(--bone);
     padding:4px 10px;border-radius:3px;cursor:pointer;opacity:.85;transition:opacity .2s,border-color .2s;
   }
   .lang-toggle:hover{opacity:1;border-color:var(--blood)}
+  .nav-reserve-btn{
+    font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    background:var(--blood);border:1px solid var(--blood);color:var(--bone);
+    padding:6px 14px;border-radius:3px;cursor:pointer;transition:transform .2s,background .2s;
+  }
+  .nav-reserve-btn:hover{transform:translateY(-1px);background:#d62b20}
   @media(max-width:640px){nav ul{display:none}}
 
   /* ---------- HERO (restructured: two-column footer row) ---------- */
@@ -255,11 +262,18 @@
     <li><a href="#studio" data-i18n="nav.studio">Studio</a></li>
     <li><a href="#work" data-i18n="nav.work">Work</a></li>
     <li><a href="#book" data-i18n="nav.book">Book</a></li>
-    <li><a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener">Instagram ↗</a></li>
   </ul>
-  <!-- вне <ul>, чтобы переключатель языка оставался доступен и на мобильном
-       (nav ul скрывается целиком через @media(max-width:640px), см. .lang-toggle) -->
-  <button type="button" id="langToggle" class="lang-toggle" aria-label="Switch language">TR</button>
+  <!-- Обёрнуты вместе (не как отдельные flex-дети nav — иначе
+       justify-content:space-between развёл бы их равномерно по всей
+       ширине nav вместо того, чтобы держать рядом у правого края), и
+       оба вне <ul>, чтобы оставаться доступными и на мобильном (nav ul
+       скрывается целиком через @media(max-width:640px)).
+       Прямая ссылка на Instagram в nav убрана — бронирование теперь через
+       кнопку 'Reserve' здесь же, ведущую на секцию #book на этой же странице. -->
+  <div class="nav-actions">
+    <button type="button" id="reserveBtn" class="nav-reserve-btn" data-i18n="nav.reserve">Reserve</button>
+    <button type="button" id="langToggle" class="lang-toggle" aria-label="Switch language">TR</button>
+  </div>
 </nav>
 
 <!-- ============ HERO ============ -->
@@ -395,7 +409,7 @@
   // со значением из hero-meta-list/facts).
   const I18N = {
     en: {
-      'nav.studio': 'Studio', 'nav.work': 'Work', 'nav.book': 'Book',
+      'nav.studio': 'Studio', 'nav.work': 'Work', 'nav.book': 'Book', 'nav.reserve': 'Reserve',
       'hero.kicker': 'Custom Tattoo · @elbo.inkk',
       'hero.lede': '<em>Ink that stays with you.</em> Fine line, blackwork and original custom pieces — drawn for the body it lives on. Each design is made once, for one person.',
       'hero.meta.discipline': 'Discipline <span>Tattoo Artist</span>',
@@ -431,7 +445,7 @@
       'footer.appointment': 'By appointment only',
     },
     tr: {
-      'nav.studio': 'Stüdyo', 'nav.work': 'İşler', 'nav.book': 'Randevu',
+      'nav.studio': 'Stüdyo', 'nav.work': 'İşler', 'nav.book': 'Randevu', 'nav.reserve': 'Rezervasyon',
       'hero.kicker': 'Özel Dövme · @elbo.inkk',
       'hero.lede': '<em>Kalıcı bir iz.</em> İnce çizgi, blackwork ve size özel tasarımlar — üzerinde yaşayacağı beden için çizilir. Her tasarım sadece bir kişi için, sadece bir kez yapılır.',
       'hero.meta.discipline': 'Alan <span>Dövme Sanatçısı</span>',
@@ -485,6 +499,10 @@
   document.getElementById('langToggle').addEventListener('click', () => {
     currentLang = currentLang === 'en' ? 'tr' : 'en';
     applyLang(currentLang);
+  });
+
+  document.getElementById('reserveBtn').addEventListener('click', () => {
+    document.getElementById('book').scrollIntoView({behavior: 'smooth'});
   });
 
   // year

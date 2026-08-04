@@ -32,6 +32,7 @@ from pages.home_page import (
     meta_content,
     nav_links,
     placeholder_markers_in_body,
+    reserve_button,
     reveal_elements,
     scroll_to,
     section_element,
@@ -83,6 +84,50 @@ def test_nav_work_link_points_to_correct_section(driver):
     )
 
 
+def test_nav_no_longer_has_direct_instagram_link(driver):
+    """Прямая ссылка на Instagram в nav убрана в пользу кнопки 'Reserve'
+    (см. test_reserve_button_scrolls_to_book_section) — Instagram остаётся
+    доступен через CTA/footer/work-секцию, просто не в самом nav."""
+    open_home(driver)
+    nav_instagram = [
+        a for a in driver.find_elements(By.CSS_SELECTOR, "nav a[href*='instagram.com']") if a.is_displayed()
+    ]
+    assert not nav_instagram, "В nav не должно быть прямой ссылки на Instagram"
+
+
+def test_reserve_button_present_with_correct_label(driver):
+    open_home(driver)
+    btn = reserve_button(driver)
+    assert btn.is_displayed()
+    assert driver.execute_script("return arguments[0].textContent", btn).strip() == "Reserve"
+
+
+def test_reserve_button_scrolls_to_book_section(driver):
+    """Порог 400px, а не 0/малое число: scrollIntoView с fixed-nav сверху
+    и smooth-скроллом останавливается не точно у верхнего края (~240px в
+    ручной проверке) — важно, что секция реально попала в область
+    видимости, а не точный пиксель остановки."""
+    open_home(driver)
+    book_top_before = driver.execute_script(
+        "return document.getElementById('book').getBoundingClientRect().top"
+    )
+    reserve_button(driver).click()
+    WebDriverWait(driver, 10).until(
+        lambda d: d.execute_script(
+            "return document.getElementById('book').getBoundingClientRect().top"
+        ) < min(book_top_before, 400)
+    )
+
+
+def test_reserve_button_stays_visible_on_mobile(mobile_driver):
+    """Как и #langToggle, кнопка резервации лежит вне <ul> и должна
+    оставаться доступной на мобильном, где сам список пунктов меню
+    скрыт."""
+    open_home(mobile_driver)
+    assert not is_nav_list_visible(mobile_driver)
+    assert reserve_button(mobile_driver).is_displayed()
+
+
 def test_no_horizontal_overflow_at_narrow_widths_in_either_language(mobile_driver):
     """Регрессионный guard: на 320px в турецкой локали был найден реальный
     баг — .cta ('Instagram'dan Randevu Al ↗') не помещался в ширину экрана
@@ -117,15 +162,17 @@ def test_mobile_viewport_hides_nav_with_no_alternative_toggle(mobile_driver):
     просто не существуют для пользователя (сайт одностраничный, скроллить
     можно вручную, но прямых переходов по разделам нет).
 
-    #langToggle — реальная, отдельная фича (переключатель языка, см.
-    test_lang_toggle_button_stays_visible_on_mobile), намеренно исключён
+    #langToggle и #reserveBtn — реальные, отдельные фичи (переключатель
+    языка, кнопка резервации, см. test_lang_toggle_button_stays_visible_on_mobile
+    и test_reserve_button_stays_visible_on_mobile), намеренно исключены
     из проверки ниже — это не тоггл мобильного меню."""
     open_home(mobile_driver)
     assert not is_nav_list_visible(mobile_driver)
 
+    excluded_ids = {"langToggle", "reserveBtn"}
     toggle_candidates = [
         b for b in mobile_driver.find_elements(By.CSS_SELECTOR, "button, [class*='toggle'], [class*='burger'], [class*='menu-btn']")
-        if b.is_displayed() and b.get_attribute("id") != "langToggle"
+        if b.is_displayed() and b.get_attribute("id") not in excluded_ids
     ]
     assert not toggle_candidates, (
         "Найдена кнопка, похожая на мобильное меню — если это и есть тот тоггл, "

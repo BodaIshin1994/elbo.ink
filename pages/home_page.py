@@ -85,6 +85,10 @@ def lang_toggle_button(driver):
     return driver.find_element(By.CSS_SELECTOR, "#langToggle")
 
 
+def reserve_button(driver):
+    return driver.find_element(By.CSS_SELECTOR, "#reserveBtn")
+
+
 def html_lang_attribute(driver):
     return driver.find_element(By.TAG_NAME, "html").get_attribute("lang")
 

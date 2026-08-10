@@ -35,7 +35,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,900;1,6..96,500;1,6..96,900&family=Archivo:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,96,400;0,96,700;0,96,800;0,96,900;1,96,500;1,96,800;1,96,900&family=Archivo:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 <style>
   :root{
     --ink:#0b0a09;        /* near-black background */
@@ -44,13 +44,32 @@
     --bone-dim:#9a9286;   /* muted text */
     --blood:#c0271d;      /* the one accent */
     --line:rgba(236,228,214,.14);
+    --nav-bg:rgba(11,10,9,.88);
     --display:'Bodoni Moda', serif;
     --body:'Archivo', sans-serif;
     --mono:'Space Mono', monospace;
   }
 
+  /* light mode override — toggled via [data-theme="light"] on <html> */
+  :root[data-theme="light"]{
+    --ink:#f4efe6;        /* paper background */
+    --ink-2:#e9e1d2;      /* raised panels */
+    --bone:#1a1613;       /* primary text */
+    --bone-dim:#655d51;   /* muted text */
+    --line:rgba(26,22,19,.14);
+    --nav-bg:rgba(244,239,230,.88);
+  }
+  :root[data-theme="light"] body::before{background:radial-gradient(140% 120% at 50% 0%, transparent 55%, rgba(0,0,0,.12) 100%)}
+  :root[data-theme="light"] .tile::before{background:linear-gradient(to top, rgba(26,22,19,.5), transparent 42%)}
+  :root[data-theme="light"] .tile .cap,:root[data-theme="light"] .tile .num{text-shadow:0 1px 6px rgba(244,239,230,.65)}
+
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
+
+  /* Bodoni Moda is a high-contrast display serif by design — its thin strokes can
+     read as too faint at large display sizes. A hairline text-stroke in the same
+     color bulks up the thin side of each letter without changing the typeface. */
+  h1, .book h2, footer .big, .work-aside h2{-webkit-text-stroke:.4px currentColor}
   body{
     background:var(--ink);
     color:var(--bone);
@@ -59,6 +78,8 @@
     line-height:1.5;
     overflow-x:hidden;
     -webkit-font-smoothing:antialiased;
+    font-synthesis:none; /* prevent browser-faked bold/italic — causes an offset doubled-stroke
+                             ("ghost layer") look on high-contrast serif display headings */
   }
 
   /* film grain + vignette */
@@ -68,7 +89,7 @@
     mix-blend-mode:multiply;
   }
   body::after{
-    content:"";position:fixed;inset:-200%;z-index:9999;pointer-events:none;opacity:.05;
+    content:"";position:fixed;inset:-200%;z-index:9999;pointer-events:none;opacity:.02;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     animation:grain 6s steps(6) infinite;
   }
@@ -85,18 +106,27 @@
   nav{position:fixed;top:0;left:0;right:0;width:100%;z-index:1000;
     display:flex;align-items:center;justify-content:space-between;
     padding:20px 28px;font-family:var(--mono);font-size:12px;letter-spacing:.18em;
-    text-transform:uppercase;mix-blend-mode:difference;box-sizing:border-box;}
+    text-transform:uppercase;box-sizing:border-box;
+    background:var(--nav-bg);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);}
   nav .mark{font-weight:700}
   nav .mark b{color:var(--blood)}
   nav ul{display:flex;gap:26px;list-style:none}
   nav a{color:var(--bone);text-decoration:none;opacity:.85;transition:opacity .2s}
   nav a:hover{opacity:1}
+  .nav-actions{display:flex;align-items:center;gap:12px}
   .lang-toggle{
     font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
     background:transparent;border:1px solid var(--line);color:var(--bone);
     padding:4px 10px;border-radius:3px;cursor:pointer;opacity:.85;transition:opacity .2s,border-color .2s;
   }
   .lang-toggle:hover{opacity:1;border-color:var(--blood)}
+  .nav-reserve-btn{
+    font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    background:var(--blood);border:1px solid var(--blood);color:var(--bone);
+    padding:6px 14px;border-radius:3px;cursor:pointer;transition:transform .2s,background .2s;
+  }
+  .nav-reserve-btn:hover{transform:translateY(-1px);background:#d62b20}
   @media(max-width:640px){nav ul{display:none}}
 
   /* ---------- HERO (restructured: two-column footer row) ---------- */
@@ -106,9 +136,9 @@
   .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.4em;text-transform:uppercase;
     color:var(--bone-dim);margin-bottom:18px;display:flex;gap:14px;align-items:center;}
   .kicker::before{content:"";width:54px;height:1px;background:var(--blood)}
-  h1{font-family:var(--display);font-weight:900;line-height:.82;letter-spacing:-.02em;
+  h1{font-family:var(--display);font-weight:800;font-style:italic;line-height:.82;letter-spacing:-.005em;
     font-size:clamp(76px,21vw,300px);text-transform:uppercase;margin-left:-.04em;}
-  h1 .dot{color:var(--blood);font-style:italic;font-weight:500}
+  h1 .dot{color:var(--blood)}
 
   .hero-bottom{display:grid;grid-template-columns:1.5fr .8fr;gap:40px 60px;align-items:end;
     border-top:1px solid var(--line);margin-top:34px;padding:28px 0 66px;}
@@ -176,8 +206,8 @@
   .work-split{max-width:1280px;margin:0 auto;padding:0 28px;
     display:grid;grid-template-columns:340px 1fr;gap:60px;align-items:start}
   .work-aside{position:sticky;top:90px}
-  .work-aside h2{font-family:var(--display);font-weight:900;text-transform:uppercase;
-    font-size:clamp(34px,3.2vw,56px);line-height:.88;letter-spacing:-.03em;margin:8px 0 22px;
+  .work-aside h2{font-family:var(--display);font-weight:800;font-style:italic;text-transform:uppercase;
+    font-size:clamp(34px,3.2vw,56px);line-height:.88;letter-spacing:-.01em;margin:8px 0 22px;
     overflow-wrap:break-word;hyphens:none}
   .work-aside .note{font-family:var(--mono);font-size:12px;color:var(--bone-dim);
     text-transform:uppercase;letter-spacing:.1em;max-width:30ch;margin-bottom:26px}
@@ -208,9 +238,9 @@
   .book{background:var(--ink-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center}
   .book-center{display:flex;flex-direction:column;align-items:center}
   .book .sec-label{justify-content:center}
-  .book h2{font-family:var(--display);font-weight:900;text-transform:uppercase;line-height:.85;
-    font-size:clamp(44px,9vw,140px);letter-spacing:-.02em;margin-bottom:10px}
-  .book h2 i{color:var(--blood);font-weight:500}
+  .book h2{font-family:var(--display);font-weight:800;font-style:italic;text-transform:uppercase;line-height:.85;
+    font-size:clamp(44px,9vw,140px);letter-spacing:-.005em;margin-bottom:10px}
+  .book h2 i{color:var(--blood)}
   .book p{color:var(--bone-dim);max-width:46ch;margin:0 auto 40px;font-size:16px}
   .cta{display:inline-flex;align-items:center;gap:14px;background:var(--blood);color:var(--bone);
     text-decoration:none;font-family:var(--mono);font-size:14px;letter-spacing:.16em;text-transform:uppercase;
@@ -230,9 +260,9 @@
   /* ---------- FOOTER ---------- */
   footer{padding:60px 0 50px}
   footer .wrap{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px}
-  footer .big{font-family:var(--display);font-weight:900;font-size:clamp(40px,9vw,120px);
-    text-transform:uppercase;line-height:.8;letter-spacing:-.02em}
-  footer .big i{color:var(--blood);font-weight:500}
+  footer .big{font-family:var(--display);font-weight:800;font-style:italic;font-size:clamp(40px,9vw,120px);
+    text-transform:uppercase;line-height:.8;letter-spacing:-.005em}
+  footer .big i{color:var(--blood)}
   footer .meta{font-family:var(--mono);font-size:11px;color:var(--bone-dim);letter-spacing:.14em;
     text-transform:uppercase;text-align:right;line-height:2}
   footer .meta a{color:var(--bone);text-decoration:none}
@@ -255,11 +285,19 @@
     <li><a href="#studio" data-i18n="nav.studio">Studio</a></li>
     <li><a href="#work" data-i18n="nav.work">Work</a></li>
     <li><a href="#book" data-i18n="nav.book">Book</a></li>
-    <li><a href="https://www.instagram.com/elbo.inkk" target="_blank" rel="noopener">Instagram ↗</a></li>
   </ul>
-  <!-- вне <ul>, чтобы переключатель языка оставался доступен и на мобильном
-       (nav ul скрывается целиком через @media(max-width:640px), см. .lang-toggle) -->
-  <button type="button" id="langToggle" class="lang-toggle" aria-label="Switch language">TR</button>
+  <!-- Обёрнуты вместе (не как отдельные flex-дети nav — иначе
+       justify-content:space-between развёл бы их равномерно по всей
+       ширине nav вместо того, чтобы держать рядом у правого края), и
+       оба вне <ul>, чтобы оставаться доступными и на мобильном (nav ul
+       скрывается целиком через @media(max-width:640px)).
+       Прямая ссылка на Instagram в nav убрана — бронирование теперь через
+       кнопку 'Reserve' здесь же, ведущую на секцию #book на этой же странице. -->
+  <div class="nav-actions">
+    <button type="button" id="reserveBtn" class="nav-reserve-btn" data-i18n="nav.reserve">Reserve</button>
+    <button type="button" id="themeToggle" class="lang-toggle" aria-label="Switch theme">LIGHT</button>
+    <button type="button" id="langToggle" class="lang-toggle" aria-label="Switch language">TR</button>
+  </div>
 </nav>
 
 <!-- ============ HERO ============ -->
@@ -395,7 +433,7 @@
   // со значением из hero-meta-list/facts).
   const I18N = {
     en: {
-      'nav.studio': 'Studio', 'nav.work': 'Work', 'nav.book': 'Book',
+      'nav.studio': 'Studio', 'nav.work': 'Work', 'nav.book': 'Book', 'nav.reserve': 'Reserve',
       'hero.kicker': 'Custom Tattoo · @elbo.inkk',
       'hero.lede': '<em>Ink that stays with you.</em> Fine line, blackwork and original custom pieces — drawn for the body it lives on. Each design is made once, for one person.',
       'hero.meta.discipline': 'Discipline <span>Tattoo Artist</span>',
@@ -431,7 +469,7 @@
       'footer.appointment': 'By appointment only',
     },
     tr: {
-      'nav.studio': 'Stüdyo', 'nav.work': 'İşler', 'nav.book': 'Randevu',
+      'nav.studio': 'Stüdyo', 'nav.work': 'İşler', 'nav.book': 'Randevu', 'nav.reserve': 'Rezervasyon',
       'hero.kicker': 'Özel Dövme · @elbo.inkk',
       'hero.lede': '<em>Kalıcı bir iz.</em> İnce çizgi, blackwork ve size özel tasarımlar — üzerinde yaşayacağı beden için çizilir. Her tasarım sadece bir kişi için, sadece bir kez yapılır.',
       'hero.meta.discipline': 'Alan <span>Dövme Sanatçısı</span>',
@@ -485,6 +523,26 @@
   document.getElementById('langToggle').addEventListener('click', () => {
     currentLang = currentLang === 'en' ? 'tr' : 'en';
     applyLang(currentLang);
+  });
+
+  // ---------- theme (dark default, light toggle) ----------
+  function applyTheme(theme){
+    document.documentElement.setAttribute('data-theme', theme);
+    document.getElementById('themeToggle').textContent = theme === 'dark' ? 'LIGHT' : 'DARK';
+    try { localStorage.setItem('elbo-theme', theme); } catch(e) {}
+  }
+
+  let currentTheme = 'dark';
+  try { currentTheme = localStorage.getItem('elbo-theme') || 'dark'; } catch(e) {}
+  applyTheme(currentTheme);
+
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme(currentTheme);
+  });
+
+  document.getElementById('reserveBtn').addEventListener('click', () => {
+    document.getElementById('book').scrollIntoView({behavior: 'smooth'});
   });
 
   // year

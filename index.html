@@ -65,6 +65,11 @@
 
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
+
+  /* Bodoni Moda is a high-contrast display serif by design — its thin strokes can
+     read as too faint at large display sizes. A hairline text-stroke in the same
+     color bulks up the thin side of each letter without changing the typeface. */
+  h1, .book h2, footer .big, .work-aside h2{-webkit-text-stroke:.4px currentColor}
   body{
     background:var(--ink);
     color:var(--bone);

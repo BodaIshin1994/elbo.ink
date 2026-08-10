@@ -82,7 +82,7 @@
     mix-blend-mode:multiply;
   }
   body::after{
-    content:"";position:fixed;inset:-200%;z-index:9999;pointer-events:none;opacity:.05;
+    content:"";position:fixed;inset:-200%;z-index:9999;pointer-events:none;opacity:.02;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     animation:grain 6s steps(6) infinite;
   }
@@ -129,9 +129,9 @@
   .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.4em;text-transform:uppercase;
     color:var(--bone-dim);margin-bottom:18px;display:flex;gap:14px;align-items:center;}
   .kicker::before{content:"";width:54px;height:1px;background:var(--blood)}
-  h1{font-family:var(--display);font-weight:900;line-height:.82;letter-spacing:-.02em;
+  h1{font-family:var(--display);font-weight:900;line-height:.82;letter-spacing:-.005em;
     font-size:clamp(76px,21vw,300px);text-transform:uppercase;margin-left:-.04em;}
-  h1 .dot{color:var(--blood);font-style:italic;font-weight:500}
+  h1 .dot{color:var(--blood);font-style:normal;font-weight:900}
 
   .hero-bottom{display:grid;grid-template-columns:1.5fr .8fr;gap:40px 60px;align-items:end;
     border-top:1px solid var(--line);margin-top:34px;padding:28px 0 66px;}
@@ -200,7 +200,7 @@
     display:grid;grid-template-columns:340px 1fr;gap:60px;align-items:start}
   .work-aside{position:sticky;top:90px}
   .work-aside h2{font-family:var(--display);font-weight:900;text-transform:uppercase;
-    font-size:clamp(34px,3.2vw,56px);line-height:.88;letter-spacing:-.03em;margin:8px 0 22px;
+    font-size:clamp(34px,3.2vw,56px);line-height:.88;letter-spacing:-.01em;margin:8px 0 22px;
     overflow-wrap:break-word;hyphens:none}
   .work-aside .note{font-family:var(--mono);font-size:12px;color:var(--bone-dim);
     text-transform:uppercase;letter-spacing:.1em;max-width:30ch;margin-bottom:26px}
@@ -232,7 +232,7 @@
   .book-center{display:flex;flex-direction:column;align-items:center}
   .book .sec-label{justify-content:center}
   .book h2{font-family:var(--display);font-weight:900;text-transform:uppercase;line-height:.85;
-    font-size:clamp(44px,9vw,140px);letter-spacing:-.02em;margin-bottom:10px}
+    font-size:clamp(44px,9vw,140px);letter-spacing:-.005em;margin-bottom:10px}
   .book h2 i{color:var(--blood);font-style:normal;font-weight:900}
   .book p{color:var(--bone-dim);max-width:46ch;margin:0 auto 40px;font-size:16px}
   .cta{display:inline-flex;align-items:center;gap:14px;background:var(--blood);color:var(--bone);
@@ -254,8 +254,8 @@
   footer{padding:60px 0 50px}
   footer .wrap{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px}
   footer .big{font-family:var(--display);font-weight:900;font-size:clamp(40px,9vw,120px);
-    text-transform:uppercase;line-height:.8;letter-spacing:-.02em}
-  footer .big i{color:var(--blood);font-weight:500}
+    text-transform:uppercase;line-height:.8;letter-spacing:-.005em}
+  footer .big i{color:var(--blood);font-style:normal;font-weight:900}
   footer .meta{font-family:var(--mono);font-size:11px;color:var(--bone-dim);letter-spacing:.14em;
     text-transform:uppercase;text-align:right;line-height:2}
   footer .meta a{color:var(--bone);text-decoration:none}

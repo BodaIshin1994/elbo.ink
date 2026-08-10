@@ -73,6 +73,8 @@
     line-height:1.5;
     overflow-x:hidden;
     -webkit-font-smoothing:antialiased;
+    font-synthesis:none; /* prevent browser-faked bold/italic — causes an offset doubled-stroke
+                             ("ghost layer") look on high-contrast serif display headings */
   }
 
   /* film grain + vignette */

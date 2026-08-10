@@ -44,6 +44,7 @@
     --bone-dim:#9a9286;   /* muted text */
     --blood:#c0271d;      /* the one accent */
     --line:rgba(236,228,214,.14);
+    --nav-bg:rgba(11,10,9,.88);
     --display:'Bodoni Moda', serif;
     --body:'Archivo', sans-serif;
     --mono:'Space Mono', monospace;
@@ -56,6 +57,7 @@
     --bone:#1a1613;       /* primary text */
     --bone-dim:#655d51;   /* muted text */
     --line:rgba(26,22,19,.14);
+    --nav-bg:rgba(244,239,230,.88);
   }
   :root[data-theme="light"] body::before{background:radial-gradient(140% 120% at 50% 0%, transparent 55%, rgba(0,0,0,.12) 100%)}
   :root[data-theme="light"] .tile::before{background:linear-gradient(to top, rgba(26,22,19,.5), transparent 42%)}
@@ -98,7 +100,7 @@
     display:flex;align-items:center;justify-content:space-between;
     padding:20px 28px;font-family:var(--mono);font-size:12px;letter-spacing:.18em;
     text-transform:uppercase;box-sizing:border-box;
-    background:rgba(11,10,9,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    background:var(--nav-bg);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line);}
   nav .mark{font-weight:700}
   nav .mark b{color:var(--blood)}

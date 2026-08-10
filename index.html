@@ -49,6 +49,18 @@
     --mono:'Space Mono', monospace;
   }
 
+  /* light mode override — toggled via [data-theme="light"] on <html> */
+  :root[data-theme="light"]{
+    --ink:#f4efe6;        /* paper background */
+    --ink-2:#e9e1d2;      /* raised panels */
+    --bone:#1a1613;       /* primary text */
+    --bone-dim:#655d51;   /* muted text */
+    --line:rgba(26,22,19,.14);
+  }
+  :root[data-theme="light"] body::before{background:radial-gradient(140% 120% at 50% 0%, transparent 55%, rgba(0,0,0,.12) 100%)}
+  :root[data-theme="light"] .tile::before{background:linear-gradient(to top, rgba(26,22,19,.5), transparent 42%)}
+  :root[data-theme="light"] .tile .cap,:root[data-theme="light"] .tile .num{text-shadow:0 1px 6px rgba(244,239,230,.65)}
+
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
@@ -274,6 +286,7 @@
        кнопку 'Reserve' здесь же, ведущую на секцию #book на этой же странице. -->
   <div class="nav-actions">
     <button type="button" id="reserveBtn" class="nav-reserve-btn" data-i18n="nav.reserve">Reserve</button>
+    <button type="button" id="themeToggle" class="lang-toggle" aria-label="Switch theme">LIGHT</button>
     <button type="button" id="langToggle" class="lang-toggle" aria-label="Switch language">TR</button>
   </div>
 </nav>
@@ -501,6 +514,22 @@
   document.getElementById('langToggle').addEventListener('click', () => {
     currentLang = currentLang === 'en' ? 'tr' : 'en';
     applyLang(currentLang);
+  });
+
+  // ---------- theme (dark default, light toggle) ----------
+  function applyTheme(theme){
+    document.documentElement.setAttribute('data-theme', theme);
+    document.getElementById('themeToggle').textContent = theme === 'dark' ? 'LIGHT' : 'DARK';
+    try { localStorage.setItem('elbo-theme', theme); } catch(e) {}
+  }
+
+  let currentTheme = 'dark';
+  try { currentTheme = localStorage.getItem('elbo-theme') || 'dark'; } catch(e) {}
+  applyTheme(currentTheme);
+
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme(currentTheme);
   });
 
   document.getElementById('reserveBtn').addEventListener('click', () => {

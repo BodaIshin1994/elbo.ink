@@ -66,6 +66,13 @@
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
 
+  /* Anti-copy: block text selection and image drag site-wide.
+     No inputs/forms on this page, so a blanket rule is safe — nothing here
+     needs native text selection to be usable. Paired with the copy/cut/
+     contextmenu/dragstart guards in the script at the bottom of this file. */
+  body{-webkit-user-select:none;-moz-user-select:none;user-select:none}
+  img{-webkit-user-drag:none;pointer-events:auto}
+
   /* Bodoni Moda is a high-contrast display serif by design — its thin strokes can
      read as too faint at large display sizes. A hairline text-stroke in the same
      color bulks up the thin side of each letter without changing the typeface. */
@@ -575,6 +582,20 @@
     entries.forEach((e,i)=>{ if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('in'), i*70); io.unobserve(e.target);} });
   },{threshold:.15});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // ---------- anti-copy ----------
+  // Belt-and-suspenders for the CSS user-select:none above: blocks the
+  // browser's copy/cut commands and right-click context menu (which offers
+  // "Copy"/"Inspect" regardless of selection state), plus dragging images
+  // out to save them. This deters casual copy-paste of site copy and easy
+  // image saving — it is not (and can't be) a hard guarantee against a
+  // determined visitor using devtools/view-source.
+  ['copy', 'cut', 'contextmenu'].forEach(evt => {
+    document.addEventListener(evt, e => e.preventDefault());
+  });
+  document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('dragstart', e => e.preventDefault());
+  });
 </script>
 </body>
 </html>

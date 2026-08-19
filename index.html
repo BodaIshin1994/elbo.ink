@@ -66,6 +66,13 @@
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
 
+  /* Anti-copy: block text selection and image drag site-wide.
+     No inputs/forms on this page, so a blanket rule is safe — nothing here
+     needs native text selection to be usable. Paired with the copy/cut/
+     contextmenu/dragstart guards in the script at the bottom of this file. */
+  body{-webkit-user-select:none;-moz-user-select:none;user-select:none}
+  img{-webkit-user-drag:none;pointer-events:auto}
+
   /* Bodoni Moda is a high-contrast display serif by design — its thin strokes can
      read as too faint at large display sizes. A hairline text-stroke in the same
      color bulks up the thin side of each letter without changing the typeface. */
@@ -80,6 +87,26 @@
     -webkit-font-smoothing:antialiased;
     font-synthesis:none; /* prevent browser-faked bold/italic — causes an offset doubled-stroke
                              ("ghost layer") look on high-contrast serif display headings */
+  }
+
+  /* ---------- DECORATIVE BACKGROUND MOTIF ----------
+     Single large mandala image, bled off the top-right corner, fixed so it reads as
+     one continuous backdrop while scrolling rather than a per-section repeat. Sits
+     behind all content (z-index:-1) so it never competes with text or the nav.
+     The source art is light-colored line work: shown as-is in dark mode (light lines
+     on the near-black page background), inverted in light mode so it renders as dark
+     lines on the cream background instead of nearly vanishing. */
+  .deco-bg{
+    position:fixed;top:-8%;right:-10%;
+    width:min(70vw,900px);aspect-ratio:1/1;
+    background-image:url("images/mandala-motif.webp");
+    background-repeat:no-repeat;background-size:contain;background-position:center;
+    opacity:.08;z-index:-1;pointer-events:none;
+  }
+  :root[data-theme="light"] .deco-bg{filter:invert(1);opacity:.06}
+  @media(max-width:700px){
+    .deco-bg{width:min(90vw,480px);top:-6%;right:-18%;opacity:.05}
+    :root[data-theme="light"] .deco-bg{opacity:.045}
   }
 
   /* film grain + vignette */
@@ -278,6 +305,8 @@
 </style>
 </head>
 <body>
+
+<div class="deco-bg" aria-hidden="true"></div>
 
 <nav>
   <div class="mark">ELBO<b>.</b>INK</div>
@@ -553,6 +582,20 @@
     entries.forEach((e,i)=>{ if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('in'), i*70); io.unobserve(e.target);} });
   },{threshold:.15});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // ---------- anti-copy ----------
+  // Belt-and-suspenders for the CSS user-select:none above: blocks the
+  // browser's copy/cut commands and right-click context menu (which offers
+  // "Copy"/"Inspect" regardless of selection state), plus dragging images
+  // out to save them. This deters casual copy-paste of site copy and easy
+  // image saving — it is not (and can't be) a hard guarantee against a
+  // determined visitor using devtools/view-source.
+  ['copy', 'cut', 'contextmenu'].forEach(evt => {
+    document.addEventListener(evt, e => e.preventDefault());
+  });
+  document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('dragstart', e => e.preventDefault());
+  });
 </script>
 </body>
 </html>
